@@ -49,48 +49,47 @@ Bot.on('messageCreate', message => {
         .addFields(
             { name: '**Version du bot**', value:'1.4'},
             { name: '**Changement**', value:'Mise à jour de la lib Discord.JS (1.12 -> 1.13)\nChangements Graphiques'},
-            { name: '**Hébergement**', value:'24/24 Local (merci patate le sang)'},
+            { name: '**Hébergement**', value:'24/24 Local (quand patate y pense mdr)'},
         )
         .setTimestamp()
         .setFooter('Alys Bot par Classie', Bot.user.avatarURL()); 
     message.channel.send({embeds: [Profil]});       
 }});
 
-Bot.on('message', message => {
+Bot.on('messageCreate', message => {
     if(message.content.startsWith('Aprofil')) { 
         let appar = "Bah t'es offline-";
-        let stat = {
-            "online": "En ligne !",
-            "idle": "Ah, un AFK",
-            "dnd": "Shht, Ne pas déranger",
-            "offline": "Offline... zzzzZZZ",
-        } 
-        console.log("--> Commande Aprofil !\nUtilisateur :" + message.author.username + "\nStatut : " + message.author.presence.clientStatus)
-        if (message.author.presence.status !== "offline") {
-            if (message.author.presence.clientStatus.desktop) {
+        // let stat = {
+        //    "online": "En ligne !",
+        //    "idle": "Ah, un AFK",
+        //    "dnd": "Shht, Ne pas déranger",
+        //    "offline": "Offline... zzzzZZZ",
+        // } 
+        console.log("--> Commande Aprofil !\nUtilisateur (gentil) :" + message.author.username)
+        if (message.member.presence.status !== "offline") {
+            if (message.member.presence.clientStatus.desktop) {
                 appar = "Sur ton PC";
-            } else if (message.author.presence.clientStatus.mobile) {
+            } else if (message.member.presence.clientStatus.mobile) {
                 appar = "Un petit smartphone";
-            } else if (message.author.presence.clientStatus.web) {
+            } else if (message.member.presence.clientStatus.web) {
                 appar = "Sur Web (pense à installer l'app)";
             }
         }
         var Profil= new MessageEmbed()
-        .setColor('#0066ff')
         .setTitle("Profil de " + message.author.username) 
         .setDescription("Découvre toutes les informations cools sur ton compte !")
         .setThumbnail(message.author.displayAvatarURL())
         .addFields(
             { name: 'Sur Discord depuis', value: message.author.createdAt.toLocaleDateString(), inline: true },
-            { name: 'Ton statut', value: stat[message.author.presence.status], inline: true },
+            //! { name: 'Ton statut', value: stat[message.member.presence.status], inline: true },
             { name: 'Zone de connexion', value: appar, inline: true },
             { name: 'Surnom dans le serveur', value: message.member.nickname ? message.member.nickname : message.author.username, inline: true },
             { name: 'Rôle le plus élevé', value: message.member.roles.highest, inline: true },
             { name: 'Parmi les rangs depuis', value: message.member.joinedAt.toLocaleDateString(), inline: true },
         )
-        .setColor(message.member.roles.highest.hexColor)
+        .setColor(message.member.displayHexColor)
         .setTimestamp()
-        .setFooter('Alys Bot par KiOm', Bot.user.avatarURL());
+        .setFooter('Alys Bot par Classie', Bot.user.avatarURL());
         
         message.channel.send({embeds: [Profil]});
     }
